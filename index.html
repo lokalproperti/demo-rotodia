@@ -109,7 +109,7 @@
         <!-- SCENE 1 & 2 Tetap Sama, Langsung ke SCENE 3 -->
         <section id="scene1" class="px-4 text-center overflow-hidden">
             <div class="absolute inset-0 z-0">
-                <video id="heroVideo" autoplay muted loop playsinline poster="hero-cover.jpg" class="w-full h-full object-cover"></video>
+                <video id="heroVideo" autoplay muted loop playsinline poster="/public/hero-cover.jpg" class="w-full h-full object-cover"></video>
             </div>
             <div class="absolute inset-0 bg-black/40 z-10"></div>
             <div class="relative z-20 text-white">
@@ -268,7 +268,7 @@
         function playHeroVideo() {
             const v = document.getElementById('heroVideo');
             if (!v) return;
-            v.src = (window.innerWidth >= 768) ? 'hero-desktop.mp4' : 'hero-mobile.mp4';
+            v.src = (window.innerWidth >= 768) ? '/public/hero-desktop.mp4' : '/public/hero-mobile.mp4';
             v.playbackRate = 0.8;
             v.play().catch(() => {
                 document.addEventListener('touchstart', () => v.play(), {once: true});
