@@ -107,32 +107,16 @@
 
     <div class="snap-container">
         <!-- SCENE 1 & 2 Tetap Sama, Langsung ke SCENE 3 -->
-        <section id="scene1" class="relative flex items-center justify-center bg-[#0a0a0a] overflow-hidden px-0 md:px-4">
-            
-            <!-- BACKDROP BLUR (Hanya muncul di Desktop) -->
-            <div id="blurContainer" class="absolute inset-0 z-0 hidden md:block overflow-hidden pointer-events-none">
-                <video id="blurVideo" autoplay muted loop playsinline class="w-full h-full object-cover blur-[80px] opacity-40 scale-110"></video>
+        <section id="scene1" class="px-4 text-center overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <video id="heroVideo" autoplay muted loop playsinline poster="/public/hero-cover.jpg" class="w-full h-full object-cover"></video>
             </div>
-
-            <!-- MAIN VIDEO CONTAINER (YouTube/Cinema Style) -->
-            <div class="relative z-10 w-full max-w-6xl">
-                <!-- Rasio Dinamis: 9:16 di Mobile, 16:9 di Desktop -->
-                <div class="relative w-full aspect-[9/16] md:aspect-video bg-black shadow-2xl overflow-hidden border-0 md:border md:border-white/5">
-                    
-                    <video id="heroVideo" autoplay muted loop playsinline class="w-full h-full object-cover md:object-contain"></video>
-                    
-                    <!-- OVERLAY TEXT -->
-                    <div class="absolute inset-0 bg-black/20 flex flex-col justify-center items-center text-white p-6">
-                        <h1 class="text-4xl md:text-7xl mb-4 leading-tight serif text-center">
-                            Secure Your Future at <br><span class="italic text-[#C5A059]">Cowles Rd, Mosman</span>
-                        </h1>
-                        <p class="text-[10px] md:text-xl font-light tracking-[0.3em] uppercase opacity-90 text-center">
-                            A Private Digital Offer Suite
-                        </p>
-                    </div>
-                </div>
+            <div class="absolute inset-0 bg-black/40 z-10"></div>
+            <div class="relative z-20 text-white">
+                <h1 class="text-4xl md:text-7xl mb-4 leading-tight">Secure Your Future at <br><span class="italic">Cowles Rd, Mosman</span></h1>
+                <p class="text-xs md:text-xl font-light tracking-[0.3em] uppercase opacity-90">A Private Digital Offer Suite</p>
             </div>
-            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-scroll z-20 text-white/30 text-center"></div>
+            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-scroll z-20 text-white text-center">
                 <p class="text-[10px] uppercase tracking-widest mb-2 opacity-60">Scroll</p>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
             </div>
@@ -237,7 +221,6 @@
                         <button type="submit" id="submitBtn" class="btn-gold w-full py-5 text-black font-bold text-xs uppercase tracking-[0.3em] shadow-xl transform transition active:scale-95">
                             Submit
                         </button>
-                        <p class="mt-4 text-[10px] uppercase tracking-[0.2em] text-gray-400 text-center leading-relaxed font-medium">This is a non-binding expression of interest and does not constitute a legal contract.</p>
                     </div>
                 </form>
             </div>
@@ -283,31 +266,12 @@
 
         // --- VIDEO PLAYBACK ---
         function playHeroVideo() {
-            const mainVideo = document.getElementById('heroVideo');
-            const blurVideo = document.getElementById('blurVideo');
-            const isDesktop = window.innerWidth >= 768;
-
-            if (!mainVideo) return;
-
-            // Logic: Desktop load Desktop.mp4 ke 2 tag video. Mobile load Mobile.mp4 ke 1 tag.
-            if (isDesktop) {
-                const desktopSrc = '/public/hero-desktop.mp4';
-                mainVideo.src = desktopSrc;
-                if (blurVideo) {
-                    blurVideo.src = desktopSrc;
-                    blurVideo.play();
-                }
-            } else {
-                mainVideo.src = '/public/hero-mobile.mp4';
-                // blurVideo tidak perlu di-load karena container-nya hidden md:block
-            }
-
-            mainVideo.playbackRate = 0.8;
-            mainVideo.play().catch(() => {
-                document.addEventListener('touchstart', () => {
-                    mainVideo.play();
-                    if (isDesktop && blurVideo) blurVideo.play();
-                }, {once: true});
+            const v = document.getElementById('heroVideo');
+            if (!v) return;
+            v.src = (window.innerWidth >= 768) ? '/public/hero-desktop.mp4' : '/public/hero-mobile.mp4';
+            v.playbackRate = 0.8;
+            v.play().catch(() => {
+                document.addEventListener('touchstart', () => v.play(), {once: true});
             });
         }
         window.addEventListener('DOMContentLoaded', playHeroVideo);
