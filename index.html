@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cowles Rd, Mosman | Private Offer Suite</title>
-    
+
     <!-- 1. EXTERNAL RESOURCES -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
-    
+
     <style>
         /* 2. CORE DESIGN SYSTEM */
         body { 
@@ -18,7 +18,7 @@
             overflow-x: hidden; 
         }
         h1, h2, h3, .serif { font-family: 'Playfair Display', serif; }
-        
+
         /* 3. SCROLL SNAP LOGIC (3 FULL-SCREEN SCENES) */
         .snap-container { 
             scroll-snap-type: y mandatory; 
@@ -27,7 +27,7 @@
             scrollbar-width: none; 
         }
         .snap-container::-webkit-scrollbar { display: none; }
-        
+
         section { 
             scroll-snap-align: start; 
             min-height: 100vh; 
@@ -70,7 +70,7 @@
         /* 6. AGENT PROFILE STYLING */
         .image-frame-container { position: relative; width: 100%; max-width: 300px; }
         @media (min-width: 768px) { .image-frame-container { max-width: 400px; } }
-        
+
         .gold-border-back {
             position: absolute; top: 15px; left: 15px; width: 100%; height: 100%;
             border: 1px solid #C5A059; z-index: 0;
@@ -210,7 +210,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="mt-8">
                         <label class="block text-[10px] uppercase font-bold text-gray-400 mb-2">Comments</label>
                         <textarea name="comments" rows="1" class="w-full border-b border-gray-200 py-1 bg-transparent outline-none focus:border-[#C5A059] resize-none text-sm"></textarea>
@@ -221,6 +221,7 @@
                         <button type="submit" id="submitBtn" class="btn-gold w-full py-5 text-black font-bold text-xs uppercase tracking-[0.3em] shadow-xl transform transition active:scale-95">
                             Submit
                         </button>
+                        <p class="mt-4 text-[10px] uppercase tracking-[0.2em] text-gray-400 text-center leading-relaxed font-medium">This is a non-binding expression of interest and does not constitute a legal contract.</p>
                     </div>
                 </form>
             </div>
@@ -302,7 +303,7 @@
             btn.disabled = true;
             status.innerHTML = "SENDING OFFER...";
             status.className = "mb-4 text-sm font-semibold text-gray-400 animate-pulse";
-            
+
             fetch(scriptURL, { method: 'POST', body: new FormData(form)})
                 .then(() => {
                     status.innerHTML = "✅ SUCCESS! OFFER SENT TO AGENT.";
