@@ -293,29 +293,54 @@
                 e.target.value = new Intl.NumberFormat('en-AU').format(num);
             }
         });
-        // --- FORM SUBMISSION ---
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbw6bsPQv5u64CeMfkTzseVG7Ya8PBHwqqnnyqqsarFrVGr_cNnds-8CQVnkoCZrCkZ_/exec';
+        // --- FORM SUBMISSION VIA CLOUDFLARE WORKER ---
         const form = document.getElementById('offerForm');
-        form.addEventListener('submit', e => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
             const status = document.getElementById('statusMsg');
+            const formData = new FormData(e.target);
+            const data = {
+                key: "rotodia777", 
+                agent_email: formData.get('agent_email'),
+                property_address: formData.get('property_address'),
+                buyer_names: formData.get('buyer_names'),
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                offer_price: formData.get('offer_price'),
+                deposit: formData.get('deposit'),
+                settlement: formData.get('settlement'),
+                subject_to_finance: formData.get('subject_to_finance') === 'on',
+                subject_to_inspection: formData.get('subject_to_inspection') === 'on',
+                comments: formData.get('comments')
+            };
+
             btn.disabled = true;
             status.innerHTML = "SENDING OFFER...";
             status.className = "mb-4 text-sm font-semibold text-gray-400 animate-pulse";
 
-            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-                .then(() => {
+            try {
+                const response = await fetch("https://rotodia-email-api.id-lokalproperti.workers.dev", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
                     status.innerHTML = "✅ SUCCESS! OFFER SENT TO AGENT.";
                     status.className = "mb-4 text-sm font-semibold text-green-600";
                     form.reset();
-                    btn.disabled = false;
-                })
-                .catch(() => {
-                    status.innerHTML = "❌ ERROR. PLEASE TRY AGAIN.";
+                } else {
+                    const err = await response.json();
+                    status.innerHTML = "❌ ERROR: " + (err.error || "SERVER FAILED");
                     status.className = "mb-4 text-sm font-semibold text-red-600";
-                    btn.disabled = false;
-                });
+                }
+            } catch (error) {
+                status.innerHTML = "❌ NETWORK ERROR. CHECK CONNECTION.";
+                status.className = "mb-4 text-sm font-semibold text-red-600";
+            } finally {
+                btn.disabled = false;
+            }
         });
     </script>
 </body>
