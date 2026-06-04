@@ -298,45 +298,41 @@
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
             const status = document.getElementById('statusMsg');
-            const formData = new FormData(e.target);
-            const data = {
-                key: "rotodia777", 
-                agent_email: formData.get('agent_email'),
-                property_address: formData.get('property_address'),
-                buyer_names: formData.get('buyer_names'),
-                email: formData.get('email'),
-                phone: formData.get('phone'),
-                offer_price: formData.get('offer_price'),
-                deposit: formData.get('deposit'),
-                settlement: formData.get('settlement'),
-                subject_to_finance: formData.get('subject_to_finance') === 'on',
-                subject_to_inspection: formData.get('subject_to_inspection') === 'on',
-                comments: formData.get('comments')
+            const fd = new FormData(form);
+            
+            const payload = {
+                key: "rotodia777", // Ganti dengan AUTH_KEY Anda
+                agent_email: fd.get('agent_email'),
+                property_address: fd.get('property_address'),
+                buyer_names: fd.get('buyer_names'),
+                email: fd.get('email'),
+                phone: fd.get('phone'),
+                offer_price: fd.get('offer_price'),
+                deposit: fd.get('deposit'),
+                settlement: fd.get('settlement'),
+                subject_to_finance: fd.get('subject_to_finance') === 'on',
+                subject_to_inspection: fd.get('subject_to_inspection') === 'on',
+                comments: fd.get('comments')
             };
 
             btn.disabled = true;
             status.innerHTML = "SENDING OFFER...";
-            status.className = "mb-4 text-sm font-semibold text-gray-400 animate-pulse";
 
             try {
-                const response = await fetch("https://rotodia-email-api.id-lokalproperti.workers.dev", {
+                const res = await fetch("https://rotodia-email-api.id-lokalproperti.workers.dev", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(data)
+                    body: JSON.stringify(payload)
                 });
 
-                if (response.ok) {
-                    status.innerHTML = "✅ SUCCESS! OFFER SENT TO AGENT.";
-                    status.className = "mb-4 text-sm font-semibold text-green-600";
+                if (res.ok) {
+                    status.innerHTML = "✅ SUCCESS! OFFER SENT.";
                     form.reset();
                 } else {
-                    const err = await response.json();
-                    status.innerHTML = "❌ ERROR: " + (err.error || "SERVER FAILED");
-                    status.className = "mb-4 text-sm font-semibold text-red-600";
+                    status.innerHTML = "❌ FAILED TO SEND.";
                 }
-            } catch (error) {
-                status.innerHTML = "❌ NETWORK ERROR. CHECK CONNECTION.";
-                status.className = "mb-4 text-sm font-semibold text-red-600";
+            } catch (err) {
+                status.innerHTML = "❌ ERROR CONNECTION.";
             } finally {
                 btn.disabled = false;
             }
