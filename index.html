@@ -145,7 +145,6 @@
             <div class="max-w-4xl w-full mx-auto">
                 <form id="offerForm" class="glass-panel p-6 md:p-12 shadow-2xl rounded-sm">
                     <!-- GANTI VALUE INI DENGAN EMAIL AGEN TUJUAN -->
-                    <input type="hidden" name="agent_email" value="tamijomisdiati@gmail.com">
                     <input type="hidden" name="property_address" value="Cowles Rd, Mosman">
                     <h2 class="text-4xl md:text-6xl mb-10 text-center serif tracking-tight text-black">Offer Details</h2>
                     <div class="grid md:grid-cols-2 gap-8">
@@ -319,7 +318,7 @@
             status.innerHTML = "SENDING OFFER...";
 
             try {
-                const res = await fetch("https://rotodia-email-api.id-lokalproperti.workers.dev", {
+                const res = await fetch("/submit", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(payload)
