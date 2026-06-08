@@ -318,7 +318,7 @@
             status.innerHTML = "SENDING OFFER...";
 
             try {
-                const res = await fetch("https://email-sender-test.id-lokalproperti.workers.dev", {
+                const res = await fetch("https://rotodia-main-router.id-lokalproperti.workers.dev/submit", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(payload)
